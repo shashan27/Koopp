@@ -1,61 +1,48 @@
 package io.deanencoded.koopp
 
 import android.os.Bundle
-import android.util.Log
-import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.deanencoded.koopp.post.ApiInteface
-import io.deanencoded.koopp.post.Base_urls
-import io.deanencoded.koopp.post.Data
-import io.deanencoded.koopp.post.MyAdapter
+import io.deanencoded.koopp.post.*
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.coroutines.flow.collectLatest
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.math.log
 
-const val  Base_url = "https://gorest.co.in/"
+
 class HomeActivity : AppCompatActivity() {
 
+    //Instance
     lateinit var myAdapter: MyAdapter
-    lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        recyclerview_users.setHasFixedSize(true)
-        linearLayoutManager = LinearLayoutManager(this)
-        recyclerview_users.layoutManager = linearLayoutManager
-
-        //Main
-        getMyData()
+        initRecyclerView()
+        initViewModel()
     }
 
-    private fun getMyData() {
-        val retrofitBuilder = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(Base_urls)
-            .build()
-            .create(ApiInteface::class.java)
+    private fun initRecyclerView() {
+        recyclerview_users.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity)
+            val decoration  = DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL)
+            addItemDecoration(decoration)
+            myAdapter = MyAdapter()
+            adapter = myAdapter
 
-
-        val retrofitData = retrofitBuilder.getData()
-
-
-        //Enqueue
-        retrofitData.enqueue(object : Callback<List<Data>?> {
-            override fun onResponse(call: Call<List<Data>?>, response: Response<List<Data>?>) {
-                val responseBody = response.body()!!
-
-                myAdapter = MyAdapter(baseContext, responseBody)
-                recyclerview_users.adapter = myAdapter
-
-            }
-
-            override fun onFailure(call: Call<List<Data>?>, t: Throwable) {
-                d("HomeActivity", "onFailure: " + t.message)
-            }
-        })
+        }
     }
+
+    private fun initViewModel() {
+        val viewModel  = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        lifecycleScope.launchWhenCreated {
+            viewModel.getListData().collectLatest {
+                myAdapter.submitData(it)
+            }
+        }
+    }
+
 }
