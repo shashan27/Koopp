@@ -13,11 +13,10 @@ data class ResultData(
 )
 
 data class MetaData(
+    val pagination: Pagination,
     val total: Int?,
     val pages: String?,
     val page: String?,
     val limit: Any?,
-    val previous: String?,
-    val current: String?,
-    val next: String?
+    val links: Links
 )

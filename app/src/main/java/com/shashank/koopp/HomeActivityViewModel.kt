@@ -17,7 +17,7 @@ class HomeActivityViewModel: ViewModel() {
     var retroService: ApiInteface = RetroInstance.getRetroInstance().create(ApiInteface::class.java)
 
     fun getListData(): Flow<PagingData<ResultData>> {
-        return Pager (config = PagingConfig(pageSize = 73, maxSize = 219),
+        return Pager (config = PagingConfig(pageSize = 65, maxSize = 200),
             pagingSourceFactory = {
                 CharacterPagingSource(retroService)
             }).flow.cachedIn(viewModelScope)

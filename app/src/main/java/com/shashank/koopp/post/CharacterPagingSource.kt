@@ -18,14 +18,14 @@ class CharacterPagingSource(private val apiService: ApiInteface): PagingSource<I
             val response = apiService.getData(nextPage)
 
             var nextPageNumber: Int? = null
-            if(response?.meta?.next != null) {
-                val uri = Uri.parse(response?.meta?.next!!)
+            if(response?.meta.pagination.links?.next != null) {
+                val uri = Uri.parse(response?.meta.pagination.links?.next!!)
                 val nextPageQuery = uri.getQueryParameter("page")
                 nextPageNumber = nextPageQuery?.toInt()
             }
             var prevPageNumber: Int? = null
-            if(response?.meta?.previous != null) {
-                val uri = Uri.parse(response?.meta?.previous!!)
+            if(response?.meta.pagination.links?.previous != null) {
+                val uri = Uri.parse(response?.meta.pagination.links?.previous!!)
                 val prevPageQuery = uri.getQueryParameter("page")
 
                 prevPageNumber = prevPageQuery?.toInt()
