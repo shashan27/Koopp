@@ -45,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:text="Id"
                 android:textColor="@color/colorBlack"
-                android:textSize="16sp"
-                android:textStyle="normal" />
+                android:textSize="17sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/body_tv"
