@@ -1,4 +1,4 @@
-package io.deanencoded.koopp.post
+package com.shashank.koopp.post
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

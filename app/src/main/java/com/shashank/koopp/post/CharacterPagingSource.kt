@@ -1,18 +1,18 @@
-package io.deanencoded.koopp.post
+package com.shashank.koopp.post
 
 import android.net.Uri
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 
-class CharacterPagingSource(val apiService: ApiInteface): PagingSource<Int, resultData>() {
+class CharacterPagingSource(private val apiService: ApiInteface): PagingSource<Int, ResultData>() {
 
-    override fun getRefreshKey(state: PagingState<Int, resultData>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, ResultData>): Int? {
 
         return state.anchorPosition
 
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, resultData> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultData> {
         return try {
             val nextPage: Int = params.key ?: FIRST_PAGE_INDEX
             val response = apiService.getData(nextPage)

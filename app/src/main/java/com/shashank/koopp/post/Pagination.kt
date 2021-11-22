@@ -1,4 +1,5 @@
-package io.deanencoded.koopp.post
+package com.shashank.koopp.post
+
 
 data class Pagination(
     val limit: Int,

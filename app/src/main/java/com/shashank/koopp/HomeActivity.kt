@@ -1,4 +1,4 @@
-package io.deanencoded.koopp
+package com.shashank.koopp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.deanencoded.koopp.R
 import io.deanencoded.koopp.post.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.flow.collectLatest
@@ -37,7 +38,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        val viewModel  = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        val viewModel  = ViewModelProvider(this).get(HomeActivityViewModel::class.java)
         lifecycleScope.launchWhenCreated {
             viewModel.getListData().collectLatest {
                 myAdapter.submitData(it)
